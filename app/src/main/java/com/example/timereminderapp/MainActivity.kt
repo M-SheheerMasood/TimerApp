@@ -39,7 +39,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.material.icons.filled.Add
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,8 +92,21 @@ fun AppScreen() {
             color     = Color(0xFF2A2A2A)
         )
 
-        // ── Spacer pushes everything below it to the bottom ──
-        Spacer(modifier = Modifier.weight(1f))
+        // ── This Box pushes the nav bar down and holds the floating buttons ──
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                FloatingAddButton()
+            }
+        }
 
         // ── The bottom navigation bar ──
         BottomNavigationBar()
@@ -160,18 +176,39 @@ fun NavButton(icon: ImageVector, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .aspectRatio(1f) // Forces the box to be a perfect square
-            .border(
-                width = 2.dp,
-                color = Color(0xFF2A2A2A), // Matches the divider color theme
-                shape = RoundedCornerShape(16.dp) // rounded corners
-            )
+            .aspectRatio(1f)
+            .background(Color(0xFF0D0D0D), RoundedCornerShape(16.dp))
+            // ── Deeper, brighter stacked borders for a visible gradient ──
+            .border(16.dp, Color(0xFF2A2A2A).copy(alpha = 0.2f), RoundedCornerShape(16.dp)) // Deepest reach
+            .border(8.dp,  Color(0xFF2A2A2A).copy(alpha = 0.5f), RoundedCornerShape(16.dp)) // Mid-transition
+            .border(2.dp,  Color(0xFF2A2A2A), RoundedCornerShape(16.dp))                    // Sharp outer edge
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = Color(0xFF9A9A9A), // Light grey for the icons
+            tint = Color(0xFF9A9A9A),
             modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
+@Composable
+fun FloatingAddButton() {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .size(50.dp)
+            .background(Color(0xFF0D0D0D), RoundedCornerShape(16.dp))
+            // ── Deeper, brighter stacked borders for a visible gradient ──
+            .border(16.dp, Color(0xFF2A2A2A).copy(alpha = 0.2f), RoundedCornerShape(16.dp))
+            .border(8.dp,  Color(0xFF2A2A2A).copy(alpha = 0.5f), RoundedCornerShape(16.dp))
+            .border(2.dp,  Color(0xFF2A2A2A), RoundedCornerShape(16.dp))
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = "Add Reminder",
+            tint = Color(0xFF9A9A9A),
+            modifier = Modifier.size(28.dp)
         )
     }
 }
